@@ -1,0 +1,10 @@
+{
+  "name": "crud-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/crud-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["crud"],
+  "// targets": "to see all targets run: nx show project crud-e2e --web",
+  "targets": {}
+}
