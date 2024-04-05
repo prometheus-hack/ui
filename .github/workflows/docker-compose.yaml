@@ -1,0 +1,10 @@
+version: "3"
+services:
+  client-crud:
+    image: node:14
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npm install && npx nx run-many --parallel --target=serve --projects=client-crud"
+    ports:
+      - "8056:4200"
