@@ -1,14 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ClientPage } from '@travel-hack/page';
+import { ClientPage, ProfilePage } from '@travel-hack/page';
 import styles from './app.module.scss';
-
-import NxWelcome from './nx-welcome';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 export function App() {
   return (
-    <div>
-      <ClientPage/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ClientPage/>} />
+        <Route path="/profile" element={<ProfilePage/>} />
+        <Route path="/profile/settings" element={<ProfilePage/>} />
+      </Routes>
+    </Router>
   );
 }
 

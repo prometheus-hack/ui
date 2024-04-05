@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@travel-hack/module": ["module/src/index.ts"],
       "@travel-hack/page": ["page/src/index.ts"]
     }
   },
