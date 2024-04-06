@@ -1,3 +1,4 @@
+export * from './lib/test-list-page/test-list-page';
 export * from './lib/admin-users-list/admin-users-list';
 export * from './lib/profile-settings-page/profile-settings-page';
 export * from './lib/register-page/register-page';
