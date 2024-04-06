@@ -20,25 +20,25 @@ export function TestPage(props: TestPageProps) {
 
       <h4 className="text-[64px]">Тесты в городе Краснодар</h4>
 
-        <RouterNavLink to={'/'}>
-          <div className='px-4 mt-12 relative'>
-            <img src={ParkKrasnodarImage} className="w-full max-h-[40em] rounded-xl" alt="" />
-            <div className="absolute left-[7em] bottom-[7em]">
-              <h4 className="text-[60px] font-bold text-white">Тест "Парк Краснодар"</h4>
-              <p className='text-[30px] text-white'>Доступен с 06.04.24 до 08.04.24</p>
-            </div>
+      <RouterNavLink to={'/'}>
+        <div className='px-4 mt-12 relative'>
+          <img src={ParkKrasnodarImage} className="w-full max-h-[40em] rounded-xl" alt="" />
+          <div className="absolute left-[7em] bottom-[7em]">
+            <h4 className="text-[60px] font-bold text-white">Тест "Парк Краснодар"</h4>
+            <p className='text-[30px] text-white'>Доступен с 06.04.24 до 08.04.24</p>
           </div>
-        </RouterNavLink>
+        </div>
+      </RouterNavLink>
 
-        <RouterNavLink to={'/'}>
-          <div className='px-4 mt-12 relative'>
-            <img src={ParkKrasnodarImage} className="w-full max-h-[40em] rounded-xl" alt="" />
-            <div className="absolute left-[7em] bottom-[7em]">
-              <h4 className="text-[60px] font-bold text-white">Тест "Парк Краснодар"</h4>
-              <p className='text-[30px] text-white'>Доступен с 06.04.24 до 08.04.24</p>
-            </div>
+      <RouterNavLink to={'/'}>
+        <div className='px-4 mt-12 relative'>
+          <img src={ParkKrasnodarImage} className="w-full max-h-[40em] rounded-xl" alt="" />
+          <div className="absolute left-[7em] bottom-[7em]">
+            <h4 className="text-[60px] font-bold text-white">Тест "Парк Краснодар"</h4>
+            <p className='text-[30px] text-white'>Доступен с 06.04.24 до 08.04.24</p>
           </div>
-        </RouterNavLink>
+        </div>
+      </RouterNavLink>
 
 
   
