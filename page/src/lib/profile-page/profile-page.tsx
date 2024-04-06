@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import styles from './profile-page.module.scss';
 import { useNavigate, NavLink as RouterNavLink } from 'react-router-dom';
+import myPlacesImage from './myPlacesImage.png';
+import galereyImage from './galereyImage.png';
+import waitListImage from './whaitListImage.png';
+import bonusImage from './bonusImage.png';
+import testImage from './testImage.png';
+import faqImage from './faqImage.png';
+import { AvatarImage, ProfileCardButton } from '@travel-hack/module';
 
 /* eslint-disable-next-line */
 export interface ProfilePageProps {}
@@ -46,7 +53,7 @@ export function ProfilePage(props: ProfilePageProps) {
             <p>Назад</p>
           </button>
 
-          <div className="flex justify-center items-center space-x-4 mt-8">
+          <div className="flex justify-center items-center space-x-4 mt-8 px-4">
           {isLoadingImg && <div className="w-36 h-24 animate-pulse bg-gray-300 rounded-full "/>}
           <img 
             className='rounded-full border-4 h-24 border-purple-500' 
@@ -79,10 +86,18 @@ export function ProfilePage(props: ProfilePageProps) {
                 Редактировать<br/> профиль
               </RouterNavLink>
             </div>
-
           </div>
 
-          <div className="w-full h-[30em] bg-white rounded-t-3xl mt-12"></div>
+          <div className="w-full bg-white rounded-t-3xl mt-12 px-8 py-4 grid grid-cols-2 gap-16">
+
+            <ProfileCardButton name='Мои места' imageUrl={myPlacesImage} url='/my-places' />
+            <ProfileCardButton name='Галерея' imageUrl={galereyImage} url='/galery' />
+            <ProfileCardButton name='Желания' imageUrl={waitListImage} url='/waitlist' />
+            <ProfileCardButton name='Бонусы' imageUrl={bonusImage} url='/bonuses' />
+            <ProfileCardButton name='Тесты' imageUrl={testImage} url='/test' />
+            <ProfileCardButton name='Обратная связь' imageUrl={faqImage} url='/faq' />
+
+          </div>
         </div>
       </div>
     </div>

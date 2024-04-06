@@ -6,12 +6,32 @@ import { ClientNavbar } from '@travel-hack/module';
 /* eslint-disable-next-line */
 export interface ClientPageProps {}
 
+type Place = {
+  name: string;
+  description: string;
+  position: [number, number];
+};
+
 export function ClientPage(props: ClientPageProps) {
-  const [positions, setPositions] = useState([
-    [55.75, 37.57],
-    [55.75, 37.00],
-    [55.75, 36.57],
+  const [places, setPlaces] = useState<Place[]>([
+    {
+      name: 'Place 1',
+      description: 'Description 1',
+      position: [55.75, 37.57],
+    },
+    {
+      name: 'Place 2',
+      description: 'Description 2',
+      position: [55.75, 37.00],
+    },
+    {
+      name: 'Place 3',
+      description: 'Description 3',
+      position: [55.75, 36.57],
+    },
   ]);
+
+  const [activePlace, setActivePlace] = useState<Place | null>(places[0]);
 
   const [position, setPosition] = useState([55.75, 37.57]);
   const [zoom, setZoom] = useState(9);
@@ -36,12 +56,16 @@ export function ClientPage(props: ClientPageProps) {
     <div className={styles['h-screen relative']}>
       <ClientNavbar />
       
-      <div className={`absolute shadow-lg left-4 lg:left-4 sm:left-0 bottom-4 w-[30em] lg:w-[30em] sm:w-full rounded-2xl bg-white lg:bg-white sm:bg-[#E6E0FF] border pt-0 flex flex-col items-center ${isCollapsedDialog ? 'h-[70em]' : 'h-[30em]'}`} style={{ zIndex: 1 }}>
+      <div className={`absolute shadow-lg left-4 lg:left-4 sm:left-0 bottom-4 w-[30em] lg:w-[30em] sm:w-full rounded-2xl bg-white lg:bg-white sm:bg-[#E6E0FF] border pt-0 flex flex-col ${isCollapsedDialog ? 'h-[70em]' : 'h-[30em]'}`} style={{ zIndex: 1 }}>
         <button type='button' onClick={() => setisCollapsedDialog(!isCollapsedDialog)} className="w-full bg-transparent py-2 hover:bg-gray-100">
           <hr className='h-[0.5em] w-[5em] rounded-full bg-gray-300 mx-auto' />
         </button>
 
-        <input type="text" className='py-2 px-4 mt-8 bg-white lg:bg-gray-200 sm:bg-white border w-[95%] rounded-xl' />
+        <input placeholder='Поиск' type="text" className='py-2 px-4 mt-8 mx-auto bg-white lg:bg-gray-200 sm:bg-white border w-[95%] rounded-xl' />
+
+        <h4 className='text-start justify-items-start mx-4 mt-4 font-sans text-[24px]'>
+          { activePlace?.name }
+        </h4>
       </div>
 
       <button type='button' onClick={handleGetLocation} className='absolute right-4 top-[10em] flex items-center justify-center p-2 bg-white hover:bg-gray-100 shadow-md rounded-full text-gray-400 border' style={{ zIndex: 1 }}>
@@ -58,22 +82,23 @@ export function ClientPage(props: ClientPageProps) {
 
       <div className="mx-auto">
         <YMaps>
-          <div>
-            <Map width="100" height="80em" defaultState={{ center: position, zoom: zoom }}>
+          <Map width="100" height="80em" defaultState={{ center: places[0].position, zoom: zoom }}>
               {
-                positions.map((pos) => (
-                  <Placemark geometry={pos} />
+                places.map((place) => (
+                  <button onClick={() => setActivePlace(place)}>
+                    <Placemark geometry={place.position} />
+                  </button>
+                  
                 ))
-              
               }
               
-              {positions.map((pos, index) => (
-                index !== positions.length - 1 && (
+              {places.map((place, index) => (
+                index !== places.length - 1 && (
                   <GeoObject
                     key={index}
                     geometry={{
                       type: "LineString",
-                      coordinates: [pos, positions[index + 1]],
+                      coordinates: [place.position, places[index + 1].position],
                     }}
                     options={{
                       geodesic: true,
@@ -84,7 +109,6 @@ export function ClientPage(props: ClientPageProps) {
                 )
               ))}
             </Map>
-          </div>
         </YMaps>
       </div>
     </div>

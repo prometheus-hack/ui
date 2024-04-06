@@ -1,0 +1,22 @@
+{
+  "name": "admin-crud",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/admin-crud/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project admin-crud --web",
+  "targets": {
+    "executor": "@nrwl/web:dev-server",
+    "options": {
+        "buildTarget": "admin-crud:build",
+        "hmr": true,
+        "port": 3001
+    },
+    "configurations": {
+        "production": {
+            "buildTarget": "admin-crud:build:production",
+            "hmr": false
+        }
+    }
+  }
+}
