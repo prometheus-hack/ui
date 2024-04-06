@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@travel-hack/module": ["module/src/index.ts"],
-      "@travel-hack/page": ["page/src/index.ts"]
+      "@travel-hack/page": ["page/src/index.ts"],
+      "@travel-hack/ui": ["ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
