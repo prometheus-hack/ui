@@ -8,9 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --force
-
-RUN npm install -g nx
+RUN npm i yarn
+RUN yarn install
 
 # Copy the entire project directory into the container
 COPY . .
