@@ -12,7 +12,6 @@ export function App() {
         <Route path="/register" element={<RegisterPage/>} />
         <Route path="/profile" element={<ProfilePage/>} />
         <Route path="/profile/settings" element={<ProfileSettingsPage/>} />
-        <Route path="/profile/settings" element={<ProfilePage/>} />
         <Route path="/my-places" element={<MyPlacesPage />} />
         <Route path="/galery" element={<GaleryPage />} />
         <Route path="/waitlist" element={<WaitlistPage />} />
