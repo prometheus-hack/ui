@@ -10,8 +10,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN npm install -g nx
+
 # Copy the entire project directory into the container
 COPY . .
 
 # Run the Nx command to serve your app
-CMD ["npx", "nx", "run-many", "--parallel", "--target=serve", "--projects=client-crud"]
+CMD ["nx", "run-many", "--parallel", "--target=serve", "--projects=client-crud"]
