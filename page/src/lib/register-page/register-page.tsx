@@ -11,6 +11,13 @@ export function RegisterPage(props: RegisterPageProps) {
   const [password, setPassword] = useState('');
   const history = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      history('/');
+    }
+  }, [history]);
+
   const handleRegisterSubmit = async (e:any) => {
     e.preventDefault();
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './profile-page.module.scss';
 import { useNavigate, NavLink as RouterNavLink } from 'react-router-dom';
 import myPlacesImage from './myPlacesImage.png';
@@ -8,28 +8,54 @@ import bonusImage from './bonusImage.png';
 import testImage from './testImage.png';
 import faqImage from './faqImage.png';
 import { AvatarImage, ProfileCardButton } from '@travel-hack/module';
+import { ProfileDTO } from './Profile.dto';
 
 /* eslint-disable-next-line */
 export interface ProfilePageProps {}
 
-type Profile = {
-  name: string;
-  avatar: string;
-  description: string;
-  friends_count: number;
-  followers_count: number;
-};
-
 export function ProfilePage(props: ProfilePageProps) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [profile, setProfile] = useState<Profile>({
-    name: 'Darius',
-    avatar: 'https://nc.djft.ru/avatar/darius/64/dark?v=1',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus et lectus malesuada varius.',
-    friends_count: 0,
-    followers_count: 0,
-  });
+  const [profile, setProfile] = useState<ProfileDTO|null>(null);
+
+  const handleGetUser = async () => {
+
+    try {
+      const response = await fetch('https://hack4.k-lab.su/api/user/profile/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('access_token') || '',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setProfile(data);
+        setIsLoading(false);
+        localStorage.setItem('current_user', data);
+      } else {
+        console.error('Ошибка при получении данных пользователя');
+        console.error(response);
+      }
+    } catch (error) {
+      console.error('Произошла ошибка:', error);
+    }
+  };
+
+  const [isGetUser, setIsGetUser] = useState(false);
+  if (!isGetUser) {
+    handleGetUser();
+    setIsGetUser(true);
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleGetUser();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const [isLoadingImg, setIsLoadingImg] = useState(true);
 
@@ -44,7 +70,7 @@ export function ProfilePage(props: ProfilePageProps) {
 
   return (
     <div className={styles['container ']}>
-      <div className="bg-[#E6E0FF] h-screen w-screen pt-8">
+      <div className="bg-[#E6E0FF] h-screen w-screen pt-8 overflow-y-auto">
         <div className="w-1/4 lg:w-1/4 md:w-2/3 sm:w-full mx-auto">
           <button onClick={() => navigate(-1)} className='flex items-center justify-center space-x-2 ml-4'>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -57,38 +83,53 @@ export function ProfilePage(props: ProfilePageProps) {
           {isLoadingImg && <div className="w-36 h-24 animate-pulse bg-gray-300 rounded-full "/>}
           <img 
             className='rounded-full border-4 h-24 border-purple-500' 
-            src={profile.avatar} 
+            src={profile?.avatar} 
             alt="" 
             onLoad={handleImageLoad} 
             onError={handleImageError}
           />
-            <div>
-              <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile.name}</p>
-              <p className="font-[Gilroy] text-[18px] font-hairline leading-[20.82px] text-left">{profile.description}</p>
-            </div>
+            {
+              isLoading && <div className="flex flex-col items-start">
+                <div className="w-36 h-6 animate-pulse bg-gray-300 rounded-xl mt-8"/>
+                <div className="w-36 h-6 animate-pulse bg-gray-300 rounded-xl mt-4"/>
+              </div>
+            }
+            {
+              !isLoading && <div className="flex flex-col items-start">
+                <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile?.first_name} {profile?.last_name}</p>
+                <p className="text-gray-500 text-left">{profile?.title}</p>
+              </div>
+            }
           </div>
 
-          <div className="flex items-center justify-center xpace-x-4">
-            <div className="flex items-center space-x-8 mt-8">
-              <div className='flex flex-col items-center'>
-                <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile.friends_count}</p>
-                <p>Друзья</p>
-              </div>
-              <div className='flex flex-col items-center'>
-                <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile.followers_count}</p>
-                <p>Подписчики</p>
-              </div>
+          {
+            isLoading && <div className="w-full h-96 animate-pulse bg-gray-300 rounded-xl mt-8"/>
+          }
+          {
+            !isLoading && (
+              <div className="flex items-center justify-center xpace-x-4">
+                <div className="flex items-center space-x-8 mt-8">
+                  <div className='flex flex-col items-center'>
+                    <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile?.friends}</p>
+                    <p>Друзья</p>
+                  </div>
+                  <div className='flex flex-col items-center'>
+                    <p className="font-[Gilroy] text-[25px] font-hairline leading-[28.82px] text-left">{profile?.subscribers}</p>
+                    <p>Подписчики</p>
+                  </div>
 
-              <RouterNavLink
-                to={"/profile/settings"}
-                className={"rounded-xl bg-transparrent hover:bg-gray-400 border-2 border-gray-500 px-4 py-2"}
-              >
-                Редактировать<br/> профиль
-              </RouterNavLink>
-            </div>
-          </div>
+                  <RouterNavLink
+                    to={"/profile/settings"}
+                    className={"rounded-xl bg-transparrent hover:bg-gray-400 border-2 border-gray-500 px-4 py-2"}
+                  >
+                    Редактировать<br/> профиль
+                  </RouterNavLink>
+                </div>
+              </div>
+            )
+          }
 
-          <div className="w-full bg-white rounded-t-3xl mt-12 px-8 py-4 grid grid-cols-2 gap-16">
+          <div className="w-full bg-white rounded-3xl lg:rounded-3xl md:rounded-3xl sm:rounded-t-3xl mt-12 px-8 py-4 grid grid-cols-2 gap-16">
 
             <ProfileCardButton name='Мои места' imageUrl={myPlacesImage} url='/my-places' />
             <ProfileCardButton name='Галерея' imageUrl={galereyImage} url='/galery' />

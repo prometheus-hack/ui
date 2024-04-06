@@ -11,11 +11,18 @@ export function LoginPage(props: LoginPageProps) {
   const [password, setPassword] = useState('');
   const history = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      history('/');
+    }
+  }, [history]);
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://hack4.k-lab.su/user/login', {
+      const response = await fetch('https://hack4.k-lab.su/api/user/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
