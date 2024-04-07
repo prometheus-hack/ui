@@ -85,8 +85,8 @@ export function ProfilePage(props: ProfilePageProps) {
   return (
     <div className={styles['container ']}>
       <div className="bg-[#E6E0FF] h-screen w-screen pt-8 overflow-y-auto">
-        <div className="w-1/4 lg:w-1/4 md:w-2/3 sm:w-full mx-auto">
-          <div className="w-full flex justify-between items-center">
+        <div className="w-full lg:w-1/4 md:w-2/3 sm:w-full mx-auto">
+          <div className="w-full flex justify-between items-center px-4">
             <button onClick={() => navigate(-1)} className='flex items-center justify-center space-x-2 ml-4'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -98,7 +98,6 @@ export function ProfilePage(props: ProfilePageProps) {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
               </svg>
-
               <p>Выйти</p>
             </button>
           </div>
@@ -107,7 +106,8 @@ export function ProfilePage(props: ProfilePageProps) {
           {isLoadingImg && <div className="w-36 h-24 animate-pulse bg-gray-300 rounded-full "/>}
           <img 
             className='rounded-full border-4 h-24 border-purple-500' 
-            src={profile?.avatar} 
+            // src={profile?.avatar} 
+            src="https://nc.djft.ru/avatar/darius/64/dark?v=1"
             alt="" 
             onLoad={handleImageLoad} 
             onError={handleImageError}
