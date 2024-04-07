@@ -22,7 +22,7 @@ export function RegisterPage(props: RegisterPageProps) {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://hack4.k-lab.su/user/registration', {
+      const response = await fetch('https://hack4.k-lab.su/api/user/registration/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
