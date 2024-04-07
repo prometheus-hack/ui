@@ -3,6 +3,10 @@
 ## RUN
 
 ```bash
+git branch fix-qr-generator
+```
+
+```bash
 npm i -g nx
 ```
 
