@@ -48,6 +48,7 @@ export function UserQRCode(props: UserQRCodeProps) {
         isGetQR ? (
           <div className={'flex justify-center items-center p-4 rounded-3xl border bg-white'}>
             <QRCode value={code} />  
+            {code}
           </div>
         ) : (
           <div className={'flex justify-center items-center py-12 border bg-white my-4 rounded-3xl'}>
