@@ -9,7 +9,7 @@ export function UserQRCode(props: UserQRCodeProps) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [code, setCode] = useState<string>(null);
+  const [code, setCode] = useState<string>('');
 
   const handleGetQR = async () => {
 
@@ -45,7 +45,7 @@ export function UserQRCode(props: UserQRCodeProps) {
   return (
     <div className={styles['container']}>
       {
-        isLoading ? (
+        code ? (
           <div className={'flex justify-center items-center py-12 border bg-white my-4 rounded-3xl'}>
             <div className={'animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900'} />
           </div>
