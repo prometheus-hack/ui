@@ -1,49 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './client-page.module.scss';
-import { YMaps, Map, Placemark, GeoObject } from '@pbe/react-yandex-maps';
-import { ClientNavbar } from '@travel-hack/module';
-import { useNavigate, NavLink as RouterNavLink } from 'react-router-dom';
+import { YMaps, Map, Placemark, TrafficControl } from '@pbe/react-yandex-maps';
+import { NavLink as RouterNavLink } from 'react-router-dom';
+import { DrawPolylines, MapControls, Menu, Place } from '@travel-hack/ui';
+import { it } from 'vitest';
 
 /* eslint-disable-next-line */
-export interface ClientPageProps {}
+export interface ClientPageProps {
+}
 
-type Place = {
-  name: string;
-  description: string;
-  position: [number, number];
-};
 
 export function ClientPage(props: ClientPageProps) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      navigate('/register');
-    }
-  }, [navigate]);
-
-  const [places, setPlaces] = useState<Place[]>([
-    {
-      name: 'Place 1',
-      description: 'Description 1',
-      position: [55.75, 37.57],
-    },
-    {
-      name: 'Place 2',
-      description: 'Description 2',
-      position: [55.75, 37.00],
-    },
-    {
-      name: 'Place 3',
-      description: 'Description 3',
-      position: [55.75, 36.57],
-    },
-  ]);
-
-  const [activePlace, setActivePlace] = useState<Place | null>(places[0]);
+  const [places, setPlaces] = useState<Place[]>([]);
 
   const [position, setPosition] = useState([55.75, 37.57]);
+  const [lastPosition, setLastPosition] = useState([55.75, 37.57]);
+  const [trafficShown, setTrafficShown] = useState(false);
   const [zoom, setZoom] = useState(9);
 
   const handleGetLocation = () => {
@@ -51,6 +23,7 @@ export function ClientPage(props: ClientPageProps) {
       navigator.geolocation.getCurrentPosition((pos) => {
         const { latitude, longitude } = pos.coords;
         setPosition([latitude, longitude]);
+        setLastPosition([latitude, longitude]);
         setZoom(15);
       });
     } else {
@@ -58,67 +31,91 @@ export function ClientPage(props: ClientPageProps) {
     }
   };
 
-  // handleGetLocation();
+  useEffect(() => {
+    handleGetLocation();
+  }, []);
 
-  const [isCollapsedDialog, setisCollapsedDialog] = useState(false);
+  const [isCollapsedMenu, setIsCollapsedMenu] = useState(true);
 
   return (
     <div className={styles['h-screen relative']}>
-      <ClientNavbar />
-      
-      <div className={`absolute shadow-lg left-4 lg:left-4 sm:left-0 bottom-4 w-[30em] lg:w-[30em] sm:w-full rounded-2xl bg-white lg:bg-white sm:bg-[#E6E0FF] border pt-0 flex flex-col ${isCollapsedDialog ? 'h-[70em]' : 'h-[30em]'}`} style={{ zIndex: 1 }}>
-        <button type='button' onClick={() => setisCollapsedDialog(!isCollapsedDialog)} className="w-full bg-transparent py-2 hover:bg-gray-100">
-          <hr className='h-[0.5em] w-[5em] rounded-full bg-gray-300 mx-auto' />
-        </button>
-
-        <input placeholder='Поиск' type="text" className='py-2 px-4 mt-8 mx-auto bg-white lg:bg-gray-200 sm:bg-white border w-[95%] rounded-xl' />
-
-        <h4 className='text-start justify-items-start mx-4 mt-4 font-sans text-[24px]'>
-          { activePlace?.name }
-        </h4>
+      <div className={'absolute left-0 top-0 h-[100vh] py-6 px-3 pb-16 flex flex-col justify-between z-50'}>
+        <RouterNavLink
+          to={'/profile'}
+          className={'flex items-center justify-center'}
+        >
+          <img className="rounded-full w-12 border-2 border-gray-300" src="https://nc.djft.ru/avatar/darius/64/dark?v=1"
+               alt="" />
+        </RouterNavLink>
       </div>
 
-      <button type='button' onClick={handleGetLocation} className='absolute right-4 top-[10em] flex items-center justify-center p-2 bg-white hover:bg-gray-100 shadow-md rounded-full text-gray-400 border' style={{ zIndex: 1 }}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3" />
-          </svg>
-      </button>
+      <MapControls
+        onChangeZoom={(value) => setZoom(prevState => prevState + value)}
+        onToggleTraffic={() => setTrafficShown(prevState => !prevState)}
+        onHandleLocation={() => handleGetLocation()}
+        shownTraffic={trafficShown}
+        onOpenMenu={() => setIsCollapsedMenu(prevState => !prevState)}
+      />
 
-      <button type='button' onClick={handleGetLocation} className='absolute bottom-8 right-4 flex items-center justify-center p-2 bg-white hover:bg-gray-100 shadow-md rounded-full text-gray-400' style={{ zIndex: 1 }}>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 -rotate-45">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-        </svg>
-      </button>
+      <Menu isCollapsedMenu={isCollapsedMenu}
+            selectedPlaces={places}
+            onSelectLocation={(place) => {
+              setPlaces(prevState => {
+                if (prevState.includes(place)) {
+                  return prevState.filter(item => item !== place);
+                } else {
+                  setLastPosition(place.location.coords);
+                  return [...prevState, place];
+                }
+              });
+            }}
+            setCollapseMenu={(value) => {
+              setIsCollapsedMenu(value);
+            }} />
 
-      <div className="mx-auto">
+      <div className="mx-auto absolute z-0 top-0 left-0 w-full h-full">
         <YMaps>
-          <Map width="100" height="80em" defaultState={{ center: places[0].position, zoom: zoom }}>
-              {
-                places.map((place) => (
-                  <button onClick={() => setActivePlace(place)}>
-                    <Placemark geometry={place.position} />
-                  </button>
-                  
-                ))
-              }
-              
-              {places.map((place, index) => (
-                index !== places.length - 1 && (
-                  <GeoObject
-                    key={index}
-                    geometry={{
-                      type: "LineString",
-                      coordinates: [place.position, places[index + 1].position],
+          <Map className={'w-full h-full'}
+               state={{ center: lastPosition, zoom: zoom }}
+               modules={['geoObject.addon.balloon', 'geoObject.addon.hint', 'control.ZoomControl']}
+          >
+            <Placemark
+              geometry={position}
+            />
+            <Placemark
+              geometry={position}
+            />
+            {
+              places && places.map((place, index) => (
+                <div key={index}>
+                  <Placemark
+                    geometry={place.location.coords}
+                    defaultOptions={{
+                      // iconLayout: layout,
+                      iconColor: '#b7a5ff'
                     }}
-                    options={{
-                      geodesic: true,
-                      strokeWidth: 5,
-                      strokeColor: "#F008",
+                    defaultProperties={{
+                      balloonContent: '<h2>' + place.name + '</h2><h3>' + place.description + '</h3>'
                     }}
+                    modules={['geoObject.addon.balloon']}
                   />
-                )
-              ))}
-            </Map>
+                </div>
+              ))
+            }
+            <TrafficControl
+              className={'hidden'}
+              options={{
+                visible: false
+              }}
+              state={{
+                trafficShown: trafficShown
+              }} />
+            {places.map((place, index) => {
+              if (index === 0)
+                return <DrawPolylines points={[[position[0], position[1]], places[0].location.coords]} />;
+              return <DrawPolylines points={[places[index - 1].location.coords, places[index].location.coords]} />;
+            })}
+          </Map>
         </YMaps>
       </div>
     </div>
