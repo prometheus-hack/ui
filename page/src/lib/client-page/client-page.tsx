@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './client-page.module.scss';
 import { YMaps, Map, Placemark, GeoObject } from '@pbe/react-yandex-maps';
 import { ClientNavbar } from '@travel-hack/module';
+import { useNavigate, NavLink as RouterNavLink } from 'react-router-dom';
 
 /* eslint-disable-next-line */
 export interface ClientPageProps {}
@@ -13,6 +14,15 @@ type Place = {
 };
 
 export function ClientPage(props: ClientPageProps) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      navigate('/register');
+    }
+  }, [navigate]);
+
   const [places, setPlaces] = useState<Place[]>([
     {
       name: 'Place 1',
