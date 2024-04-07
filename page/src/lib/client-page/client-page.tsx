@@ -1,42 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './client-page.module.scss';
-import { YMaps, Map, Placemark, TrafficControl, GeoObject } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark, TrafficControl } from '@pbe/react-yandex-maps';
 import { NavLink as RouterNavLink } from 'react-router-dom';
-import { DrawPolylines, MapControls, Menu } from '@travel-hack/ui';
+import { DrawPolylines, MapControls, Menu, Place } from '@travel-hack/ui';
+import { it } from 'vitest';
 
 /* eslint-disable-next-line */
 export interface ClientPageProps {
 }
 
-type Place = {
-  name: string;
-  description: string;
-  position: [number, number];
-};
-
 
 export function ClientPage(props: ClientPageProps) {
-  const [places, setPlaces] = useState<Place[]>([
-    {
-      name: 'Place 1',
-      description: 'Description 1',
-      position: [55.75, 37.57]
-    },
-    {
-      name: 'Place 2',
-      description: 'Description 2',
-      position: [55.75, 37.00]
-    },
-    {
-      name: 'Place 3',
-      description: 'Description 3',
-      position: [55.75, 36.57]
-    }
-  ]);
-
-  const [activePlace, setActivePlace] = useState<Place | null>(places[0]);
+  const [places, setPlaces] = useState<Place[]>([]);
 
   const [position, setPosition] = useState([55.75, 37.57]);
+  const [lastPosition, setLastPosition] = useState([55.75, 37.57]);
   const [trafficShown, setTrafficShown] = useState(false);
   const [zoom, setZoom] = useState(9);
 
@@ -45,6 +23,7 @@ export function ClientPage(props: ClientPageProps) {
       navigator.geolocation.getCurrentPosition((pos) => {
         const { latitude, longitude } = pos.coords;
         setPosition([latitude, longitude]);
+        setLastPosition([latitude, longitude]);
         setZoom(15);
       });
     } else {
@@ -52,7 +31,10 @@ export function ClientPage(props: ClientPageProps) {
     }
   };
 
-  const [isCollapsedDialog, setIsCollapsedDialog] = useState(false);
+  useEffect(() => {
+    handleGetLocation();
+  }, []);
+
   const [isCollapsedMenu, setIsCollapsedMenu] = useState(true);
 
   return (
@@ -75,43 +57,38 @@ export function ClientPage(props: ClientPageProps) {
         onOpenMenu={() => setIsCollapsedMenu(prevState => !prevState)}
       />
 
-      {/*<div*/}
-      {/*  className={`absolute shadow-lg left-4 lg:left-4 sm:left-0 bottom-4 w-[30em] lg:w-[30em] sm:w-full rounded-2xl bg-white lg:bg-white sm:bg-[#E6E0FF] border pt-0 flex flex-col ${isCollapsedDialog ? 'h-[70em]' : 'h-[30em]'}`}*/}
-      {/*  style={{ zIndex: 1 }}>*/}
-      {/*  <button type="button" onClick={() => setIsCollapsedDialog(!isCollapsedDialog)}*/}
-      {/*          className="w-full bg-transparent py-2 hover:bg-gray-100">*/}
-      {/*    <hr className="h-[0.5em] w-[5em] rounded-full bg-gray-300 mx-auto" />*/}
-      {/*  </button>*/}
-
-      {/*  <input placeholder="Поиск" type="text"*/}
-      {/*         className="py-2 px-4 mt-8 mx-auto bg-white lg:bg-gray-200 sm:bg-white border w-[95%] rounded-xl" />*/}
-
-      {/*  <h4 className="text-start justify-items-start mx-4 mt-4 font-sans text-[24px]">*/}
-      {/*    {activePlace?.name}*/}
-      {/*  </h4>*/}
-      {/*</div>*/}
-
-      <Menu isCollapsedMenu={isCollapsedMenu} setCollapseMenu={(value) => {
-        setIsCollapsedMenu(value);
-      }} />
+      <Menu isCollapsedMenu={isCollapsedMenu}
+            onSelectLocation={(place) => {
+              setPlaces(prevState => {
+                if (prevState.includes(place)) {
+                  return prevState.filter(item => item !== place);
+                } else {
+                  setLastPosition(place.location.coords);
+                  return [...prevState, place];
+                }
+              });
+            }}
+            setCollapseMenu={(value) => {
+              setIsCollapsedMenu(value);
+            }} />
 
       <div className="mx-auto absolute z-0 top-0 left-0 w-full h-full">
         <YMaps>
           <Map className={'w-full h-full'}
-               state={{ center: places[0].position, zoom: zoom }}
+               state={{ center: lastPosition, zoom: zoom }}
                modules={['geoObject.addon.balloon', 'geoObject.addon.hint', 'control.ZoomControl']}
           >
             <Placemark
               geometry={position}
             />
-            <GeoObject geometry={position} properties={{
-              hint: <img src={''} height={13} width={13} />
-            }} />
+            <Placemark
+              geometry={position}
+            />
             {
-              places.map((place, index) => (
-                <div key={index} onClick={() => setActivePlace(place)}>
+              places && places.map((place, index) => (
+                <div key={index}>
                   <Placemark
-                    geometry={place.position}
+                    geometry={place.location.coords}
                     defaultOptions={{
                       // iconLayout: layout,
                       iconColor: '#b7a5ff'
@@ -122,7 +99,6 @@ export function ClientPage(props: ClientPageProps) {
                     modules={['geoObject.addon.balloon']}
                   />
                 </div>
-
               ))
             }
             <TrafficControl
@@ -133,11 +109,11 @@ export function ClientPage(props: ClientPageProps) {
               state={{
                 trafficShown: trafficShown
               }} />
-            {places.map((place, index) => (
-              index !== places.length - 1 && (
-                <DrawPolylines points={[place.position, places[index + 1].position]} />
-              )
-            ))}
+            {places.map((place, index) => {
+              if (index === 0)
+                return <DrawPolylines points={[[position[0], position[1]], places[0].location.coords]} />;
+              return <DrawPolylines points={[places[index - 1].location.coords, places[index].location.coords]} />;
+            })}
           </Map>
         </YMaps>
       </div>
