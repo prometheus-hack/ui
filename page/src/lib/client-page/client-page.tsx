@@ -58,6 +58,7 @@ export function ClientPage(props: ClientPageProps) {
       />
 
       <Menu isCollapsedMenu={isCollapsedMenu}
+            selectedPlaces={places}
             onSelectLocation={(place) => {
               setPlaces(prevState => {
                 if (prevState.includes(place)) {

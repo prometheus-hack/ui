@@ -162,8 +162,9 @@ const InterestingPlaces = () => {
 };
 
 
-export function Menu({ isCollapsedMenu, setCollapseMenu, onSelectLocation }: {
+export function Menu({ isCollapsedMenu, selectedPlaces, setCollapseMenu, onSelectLocation }: {
   isCollapsedMenu: boolean,
+  selectedPlaces: Place[],
   setCollapseMenu: (value: boolean) => void
   onSelectLocation: (place: Place) => void
 }) {
@@ -218,7 +219,7 @@ export function Menu({ isCollapsedMenu, setCollapseMenu, onSelectLocation }: {
             {!searchQuery || searchQuery === '' ? <div>
               <MenuItems />
               <InterestingPlaces />
-            </div> : <Search query={searchQuery} onSelectLocation={onSelectLocation} />
+            </div> : <Search selectedPlaces={selectedPlaces} query={searchQuery} onSelectLocation={onSelectLocation} />
             }
           </div>
         </div>
