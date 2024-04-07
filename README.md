@@ -7,6 +7,10 @@ git branch fix-qr-generator
 ```
 
 ```bash
+npm i --force
+```
+
+```bash
 npm i -g nx
 ```
 
