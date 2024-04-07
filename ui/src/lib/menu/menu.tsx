@@ -1,5 +1,5 @@
 import styles from './menu.module.scss';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Search, { Location, Place } from '../search/search';
 
 /* eslint-disable-next-line */
@@ -19,6 +19,25 @@ const MenuItem = ({ label, image }: { label: string, image: ReactElement }) => {
 
 
 const MenuItems = () => {
+
+  const [categories, setCategories] = useState<any>([]);
+
+  useEffect(() => {
+    (async () => {
+      await fetch(`https://hack4.k-lab.su/api/organizations/categories/`, {
+        method: 'get'
+      })
+        .then(response => response.json())
+        .then(data => {
+          setCategories(data.results);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    })();
+  }, []);
+
+
   return <div className={'grid grid-cols-4 grid-rows-2 gap-3 my-4'}>
     <MenuItem label={'Кемпинги'} image={<svg width="40" height="40" viewBox="0 0 40 40" fill="none"
                                              xmlns="http://www.w3.org/2000/svg"
@@ -123,6 +142,12 @@ const MenuItems = () => {
       </defs>
     </svg>
     } />
+
+    {
+      categories.map((item:any, index:any) => (
+        <MenuItem key={index} label={item.name} image={item.icon} />
+      ))
+    }
   </div>;
 };
 const InterestingPlaces = () => {
