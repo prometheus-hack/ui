@@ -45,7 +45,6 @@ export function UserQRCode(props: UserQRCodeProps) {
 
   return (
     <div className={styles['container']}>
-      <p>{code}</p>
       {
         isGetQR ? (
           <div className={'flex justify-center items-center p-4 rounded-3xl border bg-white'}>
