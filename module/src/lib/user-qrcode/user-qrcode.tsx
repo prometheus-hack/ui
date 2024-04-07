@@ -26,7 +26,7 @@ export function UserQRCode(props: UserQRCodeProps) {
         const data = await response.json();
         setCode(data);
         setIsLoading(false);
-        localStorage.setItem('current_user', data);
+        console.log(data);
       } else {
         console.error('Ошибка при получении данных пользователя');
         console.error(response);
@@ -36,6 +36,7 @@ export function UserQRCode(props: UserQRCodeProps) {
     }
   };
 
+  handleGetQR();
   const [isGetQR, setIsGetQR] = useState(false);
   if (!isGetQR) {
     handleGetQR();
@@ -44,11 +45,11 @@ export function UserQRCode(props: UserQRCodeProps) {
 
   return (
     <div className={styles['container']}>
+      <p>{code}</p>
       {
         isGetQR ? (
           <div className={'flex justify-center items-center p-4 rounded-3xl border bg-white'}>
             <QRCode value={code} />  
-            {code}
           </div>
         ) : (
           <div className={'flex justify-center items-center py-12 border bg-white my-4 rounded-3xl'}>
