@@ -1,18 +1,23 @@
-# Use an official Node.js image as the base
-FROM node:lts-slim
+# Use the official Node.js image as the base
+FROM node:21.7.1
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy the package.json and package-lock.json files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm i yarn
+# Install dependencies (assuming you're using Yarn)
+COPY package.json ./
 RUN yarn install
-
-# Copy the entire project directory into the container
+RUN yarn global add @nrwl/cli
+RUN npm i nx -g
+# Copy the entire Nx workspace into the container
 COPY . .
 
-# Run the Nx command to serve your app
-CMD ["nx", "run-many", "--parallel", "--target=serve", "--projects=client-crud"]
+# Build all the React apps
+RUN nx build --prod
+
+# Expose the port(s) your apps will run on (adjust as needed)
+EXPOSE 4200
+EXPOSE 4300
+
+# Start the apps (you can customize this based on your app names)
+CMD ["nx", "serve", "client-crud"]

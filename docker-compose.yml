@@ -5,4 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:4200"
+      - "4200:4200"
+      - "4300:4300"
+    networks:
+      - networkName
+
+networks:
+  networkName:
+    driver: bridge
