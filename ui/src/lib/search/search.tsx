@@ -40,7 +40,7 @@ const SearchItem = ({ place, selected, onSelectLocation }: {
         {place.location.address}
       </div>
     </div>
-    <div className={"absolute top-[-2px] right-4"}>
+    <div className={'absolute top-[-2px] right-4'}>
       {isSelected ? <svg width="36" height="33" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg"
                          xmlnsXlink="http://www.w3.org/1999/xlink">
           <rect width="24" height="27" fill="url(#pattern0_50_380)" />

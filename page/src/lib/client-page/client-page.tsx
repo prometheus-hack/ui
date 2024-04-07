@@ -48,7 +48,7 @@ export function ClientPage(props: ClientPageProps) {
         </RouterNavLink>
       </div>
 
-      <div className={'absolute left-0 top-20 h-[100vh] py-6 px-3 pb-16 flex flex-col justify-between z-50'}>
+      <div className={'absolute left-0 top-16 h-[100vh] py-6 px-3 pb-16 flex flex-col justify-between z-50'}>
         <RouterNavLink
           to={'/qr'}
           className="flex items-center justify-center p-2 bg-white hover:bg-gray-100 shadow-md rounded-full text-gray-400 border"
@@ -61,7 +61,7 @@ export function ClientPage(props: ClientPageProps) {
         </RouterNavLink>
       </div>
 
-      <div className={'absolute left-0 top-40 h-[100vh] py-6 px-3 pb-16 flex flex-col justify-between z-50'}>
+      <div className={'absolute left-0 top-32 h-[100vh] py-6 px-3 pb-16 flex flex-col justify-between z-50'}>
         <RouterNavLink
           to={'/organizations'}
           className="flex items-center justify-center p-2 bg-white hover:bg-gray-100 shadow-md rounded-full text-gray-400 border"
