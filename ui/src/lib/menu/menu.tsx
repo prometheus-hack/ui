@@ -20,22 +20,22 @@ const MenuItem = ({ label, image }: { label: string, image: ReactElement }) => {
 
 const MenuItems = () => {
 
-  const [categories, setCategories] = useState<any>([]);
+  // const [categories, setCategories] = useState<any>([]);
 
-  useEffect(() => {
-    (async () => {
-      await fetch(`https://hack4.k-lab.su/api/organizations/categories/`, {
-        method: 'get'
-      })
-        .then(response => response.json())
-        .then(data => {
-          setCategories(data.results);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     await fetch(`https://hack4.k-lab.su/api/organizations/categories/`, {
+  //       method: 'get'
+  //     })
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         setCategories(data.results);
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+  //   })();
+  // }, []);
 
 
   return <div className={'grid grid-cols-4 grid-rows-2 gap-3 my-4'}>
@@ -143,11 +143,11 @@ const MenuItems = () => {
     </svg>
     } />
 
-    {
+    {/* {
       categories.map((item:any, index:any) => (
         <MenuItem key={index} label={item.name} image={item.icon} />
       ))
-    }
+    } */}
   </div>;
 };
 const InterestingPlaces = () => {
