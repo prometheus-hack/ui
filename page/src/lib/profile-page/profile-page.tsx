@@ -7,7 +7,7 @@ import waitListImage from './whaitListImage.png';
 import bonusImage from './bonusImage.png';
 import testImage from './testImage.png';
 import faqImage from './faqImage.png';
-import { AvatarImage, ProfileCardButton } from '@travel-hack/module';
+import { AvatarImage, ProfileCardButton, UserQRCode } from '@travel-hack/module';
 import { ProfileDTO } from './Profile.dto';
 
 /* eslint-disable-next-line */
@@ -152,6 +152,8 @@ export function ProfilePage(props: ProfilePageProps) {
               </div>
             )
           }
+
+          <UserQRCode />
 
           <div className="w-full bg-white rounded-3xl lg:rounded-3xl md:rounded-3xl sm:rounded-t-3xl mt-12 px-8 py-4 grid grid-cols-2 gap-16">
 
