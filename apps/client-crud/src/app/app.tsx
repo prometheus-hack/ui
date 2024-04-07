@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ClientPage, ProfilePage, MyPlacesPage, GaleryPage, WaitlistPage, BonusesPage, TestPage, FAQPage, LoginPage, RegisterPage, AdminUsersList, ProfileSettingsPage } from '@travel-hack/page';
+import { ClientPage, ProfilePage, MyPlacesPage, GaleryPage, WaitlistPage, BonusesPage, TestPage, FAQPage, LoginPage, RegisterPage, AdminUsersList, ProfileSettingsPage, QRScanerPage } from '@travel-hack/page';
 import styles from './app.module.scss';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
@@ -18,6 +18,8 @@ export function App() {
         <Route path="/bonuses" element={<BonusesPage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/faq" element={<FAQPage />} />
+
+        <Route path="/qr" element={<QRScanerPage />} />
 
         <Route path="/admin/users" element={<AdminUsersList />} />
       </Routes>
