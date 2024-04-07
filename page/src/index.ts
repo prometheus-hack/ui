@@ -1,3 +1,5 @@
+export * from './lib/organizations-list-page/organizations-list-page';
+export * from './lib/organization-create-page/organization-create-page';
 export * from './lib/qrscaner-page/qrscaner-page';
 export * from './lib/test-list-page/test-list-page';
 export * from './lib/admin-users-list/admin-users-list';
