@@ -43,8 +43,7 @@ export function ClientPage(props: ClientPageProps) {
           to={'/profile'}
           className={'flex items-center justify-center'}
         >
-          <img className="rounded-full w-12 border-2 border-gray-300" src="https://nc.djft.ru/avatar/darius/64/dark?v=1"
-               alt="" />
+          <img className="rounded-full w-12 border-2 border-gray-300" src="https://nc.djft.ru/avatar/darius/64/dark?v=1" alt="" />
         </RouterNavLink>
       </div>
 
