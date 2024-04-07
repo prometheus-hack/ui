@@ -3,7 +3,6 @@ import styles from './client-page.module.scss';
 import { YMaps, Map, Placemark, TrafficControl } from '@pbe/react-yandex-maps';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { DrawPolylines, MapControls, Menu, Place } from '@travel-hack/ui';
-import { it } from 'vitest';
 
 /* eslint-disable-next-line */
 export interface ClientPageProps {
