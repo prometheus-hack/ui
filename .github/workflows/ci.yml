@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   main:
-    runs-on: self-latest
+    runs-on: self-hosted
     steps:
       - run: "npm install"
       - run: "npx nx run-many --parallel --target=serve --projects=client-crud"
